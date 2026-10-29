@@ -1,5 +1,6 @@
 import { Elysia, t } from "elysia";
-import { registerUser } from "../services/users-service";
+import { registerUser, logoutUser } from "../services/users-service";
+import { extractBearerToken } from "../middlewares/auth-middleware";
 import { db } from "../db";
 import { users } from "../db/schema";
 import { eq } from "drizzle-orm";
@@ -61,10 +62,31 @@ export const usersRoute = new Elysia({ prefix: "/api" })
           }),
         }
       )
+      // Logout user
+      .delete("/logout", async ({ headers, set }) => {
+        try {
+          const token = extractBearerToken(headers);
+          const result = await logoutUser(token);
+          set.status = 200;
+          return {
+            data: result,
+          };
+        } catch (err: any) {
+          if (err.message === "Unauthorized") {
+            set.status = 401;
+            return {
+              error: "Unauthorized",
+            };
+          }
+          set.status = 500;
+          return {
+            error: "Internal Server Error",
+          };
+        }
+      })
       // Delete user by ID
       .delete("/:id", async ({ params: { id } }) => {
         await db.delete(users).where(eq(users.id, Number(id)));
         return { message: "User deleted successfully" };
       })
   );
-
