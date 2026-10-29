@@ -6,15 +6,17 @@ Proyek backend API menggunakan **Bun**, **ElysiaJS**, **Drizzle ORM**, dan **MyS
 
 ```
 src/
-├── index.ts          # Entry point server Elysia
+├── index.ts                 # Entry point server Elysia
 ├── db/
-│   ├── index.ts      # Koneksi database pool mysql2 + Drizzle instance
-│   └── schema.ts     # Schema tabel Drizzle (contoh: users)
-└── routes/
-    └── index.ts      # Route group API (contoh: CRUD /api/users)
-drizzle/              # File migration Drizzle
-drizzle.config.ts     # Konfigurasi Drizzle Kit
-.env.example          # Template konfigurasi environment
+│   ├── index.ts             # Koneksi database pool mysql2 + Drizzle instance
+│   └── schema.ts            # Schema tabel Drizzle (tabel users)
+├── routes/
+│   └── users-route.ts       # Routing ElysiaJS untuk user
+└── services/
+    └── users-service.ts     # Business logic untuk registrasi user
+drizzle/                     # File migration Drizzle
+drizzle.config.ts            # Konfigurasi Drizzle Kit
+.env.example                 # Template konfigurasi environment
 package.json
 tsconfig.json
 ```
@@ -57,5 +59,25 @@ tsconfig.json
 - `GET /` — Health check / welcome message
 - `GET /api/users` — Daftar semua user
 - `GET /api/users/:id` — Detail user berdasarkan ID
-- `POST /api/users` — Tambah user baru (body: `{ name: string, email: string }`)
+- `POST /api/users` — Registrasi user baru
+  - **Request Body**:
+    ```json
+    {
+      "name": "Eko",
+      "email": "eko@localhost",
+      "password": "rahasia"
+    }
+    ```
+  - **Response Success (200)**:
+    ```json
+    {
+      "data": "OK"
+    }
+    ```
+  - **Response Error (400)**:
+    ```json
+    {
+      "error": "Email sudah terdaftar"
+    }
+    ```
 - `DELETE /api/users/:id` — Hapus user berdasarkan ID
