@@ -8,6 +8,13 @@
       "when": 1793243599205,
       "tag": "0000_melted_pestilence",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1793245077676,
+      "tag": "0001_rapid_thunderball",
+      "breakpoints": true
     }
   ]
 }

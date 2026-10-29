@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { routes } from "./routes";
+import { usersRoute } from "./routes/users-route";
 
 const port = Number(process.env.PORT) || 3000;
 
@@ -7,7 +7,7 @@ const app = new Elysia()
   .get("/", () => ({
     message: "Welcome to Elysia + Bun + Drizzle + MySQL API",
   }))
-  .use(routes)
+  .use(usersRoute)
   .listen(port);
 
 console.log(`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`);
