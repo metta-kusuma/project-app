@@ -67,3 +67,4 @@ export const usersRoute = new Elysia({ prefix: "/api" })
         return { message: "User deleted successfully" };
       })
   );
+
