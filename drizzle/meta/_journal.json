@@ -15,6 +15,13 @@
       "when": 1793245077676,
       "tag": "0001_rapid_thunderball",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1793246077572,
+      "tag": "0002_confused_owl",
+      "breakpoints": true
     }
   ]
 }

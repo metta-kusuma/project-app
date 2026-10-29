@@ -9,11 +9,13 @@ src/
 ├── index.ts                 # Entry point server Elysia
 ├── db/
 │   ├── index.ts             # Koneksi database pool mysql2 + Drizzle instance
-│   └── schema.ts            # Schema tabel Drizzle (tabel users)
+│   └── schema.ts            # Schema tabel Drizzle (users, sessions)
 ├── routes/
-│   └── users-route.ts       # Routing ElysiaJS untuk user
+│   ├── users-route.ts       # Routing ElysiaJS untuk user
+│   └── auth-route.ts        # Routing ElysiaJS untuk autentikasi/login
 └── services/
-    └── users-service.ts     # Business logic untuk registrasi user
+    ├── users-service.ts     # Business logic untuk registrasi user
+    └── auth-service.ts      # Business logic untuk autentikasi user
 drizzle/                     # File migration Drizzle
 drizzle.config.ts            # Konfigurasi Drizzle Kit
 .env.example                 # Template konfigurasi environment
@@ -56,6 +58,7 @@ tsconfig.json
 
 ## Endpoint API
 
+### Users
 - `GET /` — Health check / welcome message
 - `GET /api/users` — Daftar semua user
 - `GET /api/users/:id` — Detail user berdasarkan ID
@@ -81,3 +84,25 @@ tsconfig.json
     }
     ```
 - `DELETE /api/users/:id` — Hapus user berdasarkan ID
+
+### Auth
+- `POST /api/login` — Login user
+  - **Request Body**:
+    ```json
+    {
+      "email": "eko@localhost",
+      "password": "rahasia"
+    }
+    ```
+  - **Response Success (200)**:
+    ```json
+    {
+      "data": "550e8400-e29b-41d4-a716-446655440000"
+    }
+    ```
+  - **Response Error (400)**:
+    ```json
+    {
+      "error": "Email atau Password salah"
+    }
+    ```
