@@ -29,3 +29,33 @@ export async function loginUser(email: string, password: string): Promise<string
 
   return token;
 }
+
+export async function getCurrentUser(token: string) {
+  const foundSessions = await db
+    .select()
+    .from(sessions)
+    .where(eq(sessions.token, token));
+
+  if (foundSessions.length === 0) {
+    throw new Error("Unauthorized");
+  }
+
+  const session = foundSessions[0]!;
+  const foundUsers = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, session.userId));
+
+  if (foundUsers.length === 0) {
+    throw new Error("Unauthorized");
+  }
+
+  const user = foundUsers[0]!;
+
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    created_at: user.createdAt,
+  };
+}

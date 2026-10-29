@@ -15,7 +15,7 @@ src/
 │   └── auth-route.ts        # Routing ElysiaJS untuk autentikasi/login
 └── services/
     ├── users-service.ts     # Business logic untuk registrasi user
-    └── auth-service.ts      # Business logic untuk autentikasi user
+    └── auth-service.ts      # Business logic untuk autentikasi & session user
 drizzle/                     # File migration Drizzle
 drizzle.config.ts            # Konfigurasi Drizzle Kit
 .env.example                 # Template konfigurasi environment
@@ -104,5 +104,27 @@ tsconfig.json
     ```json
     {
       "error": "Email atau Password salah"
+    }
+    ```
+- `GET /api/login/current` — Dapatkan data user yang sedang login
+  - **Headers**:
+    ```
+    Authorization: Bearer <token>
+    ```
+  - **Response Success (200)**:
+    ```json
+    {
+      "data": {
+        "id": 1,
+        "name": "Eko",
+        "email": "eko@localhost",
+        "created_at": "2026-10-29T03:00:00.000Z"
+      }
+    }
+    ```
+  - **Response Error (401)**:
+    ```json
+    {
+      "error": "Unauthorized"
     }
     ```
