@@ -14,7 +14,7 @@ src/
 │   ├── users-route.ts       # Routing ElysiaJS untuk user
 │   └── auth-route.ts        # Routing ElysiaJS untuk autentikasi/login
 └── services/
-    ├── users-service.ts     # Business logic untuk registrasi user
+    ├── users-service.ts     # Business logic untuk registrasi & logout user
     └── auth-service.ts      # Business logic untuk autentikasi & session user
 drizzle/                     # File migration Drizzle
 drizzle.config.ts            # Konfigurasi Drizzle Kit
@@ -81,6 +81,23 @@ tsconfig.json
     ```json
     {
       "error": "Email sudah terdaftar"
+    }
+    ```
+- `DELETE /api/users/logout` — Logout user (menghapus session)
+  - **Headers**:
+    ```
+    Authorization: Bearer <token>
+    ```
+  - **Response Success (200)**:
+    ```json
+    {
+      "data": "OK"
+    }
+    ```
+  - **Response Error (401)**:
+    ```json
+    {
+      "error": "Unauthorized"
     }
     ```
 - `DELETE /api/users/:id` — Hapus user berdasarkan ID
