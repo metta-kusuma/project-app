@@ -1,5 +1,6 @@
 import { Elysia, t } from "elysia";
 import { registerUser, logoutUser } from "../services/users-service";
+import { extractBearerToken } from "../middlewares/auth-middleware";
 import { db } from "../db";
 import { users } from "../db/schema";
 import { eq } from "drizzle-orm";
@@ -63,27 +64,23 @@ export const usersRoute = new Elysia({ prefix: "/api" })
       )
       // Logout user
       .delete("/logout", async ({ headers, set }) => {
-        const authHeader = headers["authorization"] || headers["Authorization"];
-
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
-          set.status = 401;
-          return {
-            error: "Unauthorized",
-          };
-        }
-
-        const token = authHeader.slice(7).trim();
-
         try {
+          const token = extractBearerToken(headers);
           const result = await logoutUser(token);
           set.status = 200;
           return {
             data: result,
           };
-        } catch {
-          set.status = 401;
+        } catch (err: any) {
+          if (err.message === "Unauthorized") {
+            set.status = 401;
+            return {
+              error: "Unauthorized",
+            };
+          }
+          set.status = 500;
           return {
-            error: "Unauthorized",
+            error: "Internal Server Error",
           };
         }
       })
